@@ -130,7 +130,6 @@ function assignJob() {
     var startTime = document.getElementById('start-time-input').value;
     var endTime = document.getElementById('end-time-input').value;
     var date = document.getElementById("date-input").value;
-
     // Check if all fields are filled
     if (!selectedUserName || !address || !startTime || !endTime || !date) {
         alert('Please fill in all fields.');
@@ -152,7 +151,8 @@ function assignJob() {
                     startingTime: startTime,
                     endingTime: endTime,
                     date:date,
-                    response: "no response"
+                    response: "no response",
+                    jobEnded:"No"
                 };
 
                 // Update or create the job details under the user's key
