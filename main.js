@@ -9,13 +9,11 @@ const firebaseConfig = {
     appId: "1:458445394475:web:29eeaac17bb48c3b43d06e",
     measurementId: "G-01BQMPN3PN"
 };
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
 // Initialize variables
-const auth = firebase.auth();
-const database = firebase.database();
+const auth = firebase.auth()
+const database = firebase.database()
 
 function showTab(tabId) {
     var tabs = document.getElementsByClassName('tab-content');
@@ -35,7 +33,6 @@ function populateDropdown() {
     if (dropdown.options.length > 0) {
         return; // If populated, exit the function
     }
-
 
     // Use a set to store unique names
     var uniqueNames = new Set();
@@ -121,3 +118,90 @@ document.getElementById('user-dropdown').addEventListener('change', getUserDetai
 
 // Call onViewTabDisplayed when the view tab is displayed
 document.getElementById('view-tab').addEventListener('click', onViewTabDisplayed);
+
+// Add an event listener to handle the assign button click
+document.getElementById('assign-button').addEventListener('click', assignJob);
+
+// Function to handle assigning a job
+function assignJob() {
+    // Get selected values from dropdown and input fields
+    var selectedUserName = document.getElementById('assign-user-dropdown').value;
+    var address = document.getElementById('address-input').value;
+    var startTime = document.getElementById('start-time-input').value;
+    var endTime = document.getElementById('end-time-input').value;
+    var date = document.getElementById("date-input").value;
+
+    // Check if all fields are filled
+    if (!selectedUserName || !address || !startTime || !endTime || !date) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    // Reference to the 'users' section in the database
+    var usersRef = database.ref('users');
+
+    // Find the user with the selected name
+    usersRef.orderByChild('name').equalTo(selectedUserName).once('value')
+        .then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var userKey = childSnapshot.key;
+
+                // Create an object with the job details
+                var jobDetails = {
+                    currentJob: address,
+                    startingTime: startTime,
+                    endingTime: endTime,
+                    date:date,
+                    response: "no response"
+                };
+
+                // Update or create the job details under the user's key
+                usersRef.child(userKey).update(jobDetails);
+
+                // Notify the user that the job has been assigned
+                alert('Job assigned successfully.');
+            });
+        })
+        .catch(function (error) {
+            console.error('Error assigning job: ', error);
+        });
+}
+// Function to populate the assign dropdown with user names
+// Function to populate the assign dropdown with user names
+function populateAssignDropdown() {
+    var assignDropdown = document.getElementById('assign-user-dropdown');
+    if (assignDropdown.options.length > 0) {
+        return; // If populated, exit the function
+    }
+    // Reference to the 'users' section in the database
+    var usersRef = database.ref('users');
+
+    // Fetch user data
+    usersRef.once('value')
+        .then(function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var userData = childSnapshot.val();
+                var userName = userData.name;
+
+                // Check if the user is already present in the dropdown
+                if (!assignDropdown.options.namedItem(userName)) {
+                    // Create options for each user name
+                    var option = document.createElement('option');
+                    option.value = userName;
+                    option.text = userName;
+                    assignDropdown.add(option); // Use add to append options
+                }
+            });
+        })
+        .catch(function (error) {
+            console.error('Error fetching user data: ', error);
+        });
+}
+
+// Initialize the assign dropdown when the assign tab is displayed
+function onAssignTabDisplayed() {
+    populateAssignDropdown();
+}
+
+// Call onAssignTabDisplayed when the assign tab is displayed
+document.getElementById('assign-tab').addEventListener('click', onAssignTabDisplayed);

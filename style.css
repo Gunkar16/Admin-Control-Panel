@@ -7,7 +7,7 @@ body {
 
 #admin-container {
     max-width: 800px;
-    height: 500px; /* Adjusted to 500px */
+    height: 500px;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
@@ -24,13 +24,13 @@ body {
 .admin-button {
     background-color: #7FBD40;
     color: #fff;
-    padding: 10px 0; /* Adjusted padding */
-    margin: 0 5px; /* Added margin for spacing */
+    padding: 10px 0;
+    margin: 0 5px;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    width: 48%; /* Set width to 48% for each button */
-    box-sizing: border-box; /* Include padding and border in the width calculation */
+    width: 48%;
+    box-sizing: border-box;
 }
 
 #assign-tab, #view-tab {
@@ -44,7 +44,6 @@ body {
 .theme-color {
     color: #7FBD40;
 }
-/* ... (Your existing CSS code) */
 
 .user-details-table {
     width: 100%;
@@ -61,4 +60,20 @@ body {
 .user-details-table th {
     background-color: #7FBD40;
     color: white;
+}
+
+/* Additional styles for the assign tab */
+#assign-user-dropdown,
+#address-input,
+#start-time-input,
+#end-time-input,
+#date-input,
+#assign-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#assign-tab label {
+    display: block;
+    margin-bottom: 5px;
 }
