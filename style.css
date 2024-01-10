@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+#admin-container {
+    max-width: 800px;
+    height: 500px; /* Adjusted to 500px */
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#button-container {
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: #7FBD40 solid 5px;
+}
+
+.admin-button {
+    background-color: #7FBD40;
+    color: #fff;
+    padding: 10px 0; /* Adjusted padding */
+    margin: 0 5px; /* Added margin for spacing */
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 48%; /* Set width to 48% for each button */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+#assign-tab, #view-tab {
+    display: none;
+}
+
+.tab-content {
+    padding: 20px;
+}
+
+.theme-color {
+    color: #7FBD40;
+}
+/* ... (Your existing CSS code) */
+
+.user-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-details-table th, .user-details-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.user-details-table th {
+    background-color: #7FBD40;
+    color: white;
+}

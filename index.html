@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Control Panel</title>
+</head>
+<body>
+    <div id="admin-container">
+        <div id="button-container">
+            <button class="admin-button" onclick="showTab('assign-tab')">Assign</button>
+            <button class="admin-button" onclick="showTab('view-tab')">View</button>
+        </div>
+
+        <div id="view-tab" class="tab-content">
+            <h2 class="theme-color">View Tab Content</h2>
+            <label for="user-dropdown">Select User:</label>
+            <select id="user-dropdown"></select>
+            <!-- <button class="admin-button" onclick="getUserDetails()">Get Details</button> -->
+
+            <div id="user-details">
+                <!-- User details will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- js scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
