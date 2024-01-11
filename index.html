@@ -3,55 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Admin Control Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Login Page</title>
 </head>
 <body>
-    <div id="admin-container">
-        <div id="button-container">
-            <button class="admin-button" onclick="showTab('assign-tab')">Assign</button>
-            <button class="admin-button" onclick="showTab('view-tab')">View</button>
-        </div>
-
-        <div id="assign-tab" class="tab-content">
-            <h2 class="theme-color">Assign Tab Content</h2>
-            <div>
-                <label for="assign-user-dropdown">Select User:</label>
-                <select id="assign-user-dropdown"></select>
-            </div>
-            
-            <div>
-                <label for="address-input">Address:</label>
-                <input type="text" id="address-input" placeholder="Enter address">
-            </div>
-            <div>
-                <label for="date-input">Date:</label>
-                <input type="date" id="date-input" placeholder="Enter start time">
-            </div>
-            <div>
-                <label for="start-time-input">Start Time:</label>
-                <input type="time" id="start-time-input" placeholder="Enter start time">
-            </div>
-            <div>
-                <label for="end-time-input">End Time:</label>
-                <input type="time" id="end-time-input" placeholder="Enter end time">
-            </div>
-            <button id="assign-button" class="admin-button">Assign</button>
-        </div>
-
-        <div id="view-tab" class="tab-content">
-            <h2 class="theme-color">View Tab Content</h2>
-            <div>
-                <label for="user-dropdown">Select User:</label>
-                <select id="user-dropdown"></select>
-            </div>
-            <div id="user-details"></div>
-        </div>
-    </div>
+    <h1>Login</h1>
+    <form>
+      <div class="row">
+        <label for="email">Email</label>
+        <input type="email" name="email" placeholder="email@example.com" id="email">
+      </div>
+      <div class="row">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+      </div>
+      <button onclick="login()" type="button">Login</button>
+    </form>
+</body>
     <!-- js scripts -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script src="main.js"></script>
-</body>
 </html>
+

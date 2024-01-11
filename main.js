@@ -15,193 +15,104 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth()
 const database = firebase.database()
 
-function showTab(tabId) {
-    var tabs = document.getElementsByClassName('tab-content');
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].style.display = 'none';
+// Set up our register function
+
+
+// Set up our login function
+function login() {
+    // Get all our input fields
+    email = document.getElementById('email').value
+    password = document.getElementById('password').value
+
+    // Validate input fields
+    if (validate_email(email) == false || validate_password(password) == false) {
+        alert('Email or Password is Outta Line!!')
+        return
+        // Don't continue running the code
     }
 
-    document.getElementById(tabId).style.display = 'block';
-}
+    auth.signInWithEmailAndPassword(email, password)
+        .then(function () {
+            // Declare user variable
+            var user = auth.currentUser
 
-// Fetch names from the database and populate the dropdown
-function populateDropdown() {
-    console.log('populateDropdown called'); // Log for debugging
-    var dropdown = document.getElementById('user-dropdown');
+            // Retrieve user data from Firebase Database
+            var database_ref = database.ref('users/' + user.uid)
+            database_ref.once('value')
+                .then(function (snapshot) {
+                    // Get user data
+                    var userData = snapshot.val()
 
-    // Check if the dropdown is already populated
-    if (dropdown.options.length > 0) {
-        return; // If populated, exit the function
-    }
+                    // Store user name in local storage
+                    localStorage.setItem('userName', userData.name)
 
-    // Use a set to store unique names
-    var uniqueNames = new Set();
+                    // Update last_sync in Firebase Database
+                    var currentdate = new Date();
+                    var datetime = currentdate.getDate() + "/"
+                        + (currentdate.getMonth() + 1) + "/"
+                        + currentdate.getFullYear() + " @ "
+                        + currentdate.getHours() + ":"
+                        + currentdate.getMinutes() + ":"
+                        + currentdate.getSeconds();
+                    // Update User data
+                    var user_data = {
+                        email: email,
+                        password: password,
+                        last_sync: datetime,
+                        name: userData.name // Assuming you have a 'name' field in your user data
+                    }
 
-    // Reference to the 'users' section in the database
-    var usersRef = database.ref('users');
+                    // Push to Firebase Database
+                    database_ref.update(user_data);
 
-    // Fetch user data
-    usersRef.once('value')
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var userData = childSnapshot.val();
-                var userName = userData.name;
-
-                // Add unique names to the set
-                uniqueNames.add(userName);
-            });
-
-            // Create options for each unique name
-            uniqueNames.forEach(function (name) {
-                var option = document.createElement('option');
-                option.value = name;
-                option.text = name;
-                dropdown.appendChild(option); // Use appendChild to add options
-            });
-        })
-        .catch(function (error) {
-            console.error('Error fetching user data: ', error);
-        });
-}
-
-// Function to get details when the dropdown value changes
-function getUserDetails() {
-    var selectedUserName = document.getElementById('user-dropdown').value;
-
-    console.log('Selected User Name:', selectedUserName); // Add this line for debugging
-
-    if (selectedUserName) {
-        var usersRef = database.ref('users');
-
-        // Find the user with the selected name
-        usersRef.orderByChild('name').equalTo(selectedUserName).once('value')
-            .then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var userData = childSnapshot.val();
-                    displayUserDetails(userData);
+                    // Redirect to page.html
+                    alert('User Logged In')
+                    window.location.href = "page.html";
+                })
+                .catch(function (error) {
+                    alert('Error retrieving user data: ' + error.message);
                 });
-            })
-            .catch(function (error) {
-                console.error('Error fetching user details: ', error);
-            });
-    }
-}
 
-// Function to display user details in a table
-function displayUserDetails(userData) {
-    var userDetailsDiv = document.getElementById('user-details');
-    userDetailsDiv.innerHTML = ''; // Clear previous content
-
-    var table = document.createElement('table');
-    table.classList.add('user-details-table');
-
-    // Create rows and cells for each user detail
-    for (var key in userData) {
-        var row = table.insertRow();
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-
-        cell1.textContent = key;
-        cell2.textContent = userData[key];
-    }
-
-    userDetailsDiv.appendChild(table);
-}
-
-// Initialize the dropdown when the view tab is displayed
-function onViewTabDisplayed() {
-    populateDropdown();
-}
-
-// Add an event listener to handle the dropdown change event
-document.getElementById('user-dropdown').addEventListener('change', getUserDetails);
-
-// Call onViewTabDisplayed when the view tab is displayed
-document.getElementById('view-tab').addEventListener('click', onViewTabDisplayed);
-
-// Add an event listener to handle the assign button click
-document.getElementById('assign-button').addEventListener('click', assignJob);
-
-// Function to handle assigning a job
-function assignJob() {
-    // Get selected values from dropdown and input fields
-    var selectedUserName = document.getElementById('assign-user-dropdown').value;
-    var address = document.getElementById('address-input').value;
-    var startTime = document.getElementById('start-time-input').value;
-    var endTime = document.getElementById('end-time-input').value;
-    var date = document.getElementById("date-input").value;
-    // Check if all fields are filled
-    if (!selectedUserName || !address || !startTime || !endTime || !date) {
-        alert('Please fill in all fields.');
-        return;
-    }
-
-    // Reference to the 'users' section in the database
-    var usersRef = database.ref('users');
-
-    // Find the user with the selected name
-    usersRef.orderByChild('name').equalTo(selectedUserName).once('value')
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var userKey = childSnapshot.key;
-
-                // Create an object with the job details
-                var jobDetails = {
-                    currentJob: address,
-                    startingTime: startTime,
-                    endingTime: endTime,
-                    date:date,
-                    response: "no response",
-                    jobEnded:"No"
-                };
-
-                // Update or create the job details under the user's key
-                usersRef.child(userKey).update(jobDetails);
-
-                // Notify the user that the job has been assigned
-                alert('Job assigned successfully.');
-            });
         })
         .catch(function (error) {
-            console.error('Error assigning job: ', error);
-        });
-}
-// Function to populate the assign dropdown with user names
-// Function to populate the assign dropdown with user names
-function populateAssignDropdown() {
-    var assignDropdown = document.getElementById('assign-user-dropdown');
-    if (assignDropdown.options.length > 0) {
-        return; // If populated, exit the function
-    }
-    // Reference to the 'users' section in the database
-    var usersRef = database.ref('users');
-
-    // Fetch user data
-    usersRef.once('value')
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var userData = childSnapshot.val();
-                var userName = userData.name;
-
-                // Check if the user is already present in the dropdown
-                if (!assignDropdown.options.namedItem(userName)) {
-                    // Create options for each user name
-                    var option = document.createElement('option');
-                    option.value = userName;
-                    option.text = userName;
-                    assignDropdown.add(option); // Use add to append options
-                }
-            });
+            // Firebase will use this to alert of its errors
+            var error_code = error.code
+            var error_message = error.message
+            alert(error_message)
+            
         })
-        .catch(function (error) {
-            console.error('Error fetching user data: ', error);
-        });
 }
 
-// Initialize the assign dropdown when the assign tab is displayed
-function onAssignTabDisplayed() {
-    populateAssignDropdown();
+
+// Validate Functions
+function validate_email(email) {
+    expression = /^[^@]+@\w+(\.\w+)+\w$/
+    if (expression.test(email) == true) {
+        // Email is good
+        return true
+    } else {
+        // Email is not good
+        return false
+    }
 }
 
-// Call onAssignTabDisplayed when the assign tab is displayed
-document.getElementById('assign-tab').addEventListener('click', onAssignTabDisplayed);
+function validate_password(password) {
+    // Firebase only accepts lengths greater than 6
+    if (password < 6) {
+        return false
+    } else {
+        return true
+    }
+}
+
+function validate_field(field) {
+    if (field == null) {
+        return false
+    }
+
+    if (field.length <= 0) {
+        return false
+    } else {
+        return true
+    }
+}
