@@ -45,7 +45,7 @@ function populateDropdown() {
         .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var userData = childSnapshot.val();
-                var userName = userData.name;
+                var userName = userData.Name;
 
                 // Add unique names to the set
                 uniqueNames.add(userName);
@@ -74,7 +74,7 @@ function getUserDetails() {
         var usersRef = database.ref('users');
 
         // Find the user with the selected name
-        usersRef.orderByChild('name').equalTo(selectedUserName).once('value')
+        usersRef.orderByChild('Name').equalTo(selectedUserName).once('value')
             .then(function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     var userData = childSnapshot.val();
@@ -95,15 +95,18 @@ function displayUserDetails(userData) {
     var table = document.createElement('table');
     table.classList.add('user-details-table');
 
-    // Create rows and cells for each user detail
-    for (var key in userData) {
+    // Specify the details you want to display
+    var detailsToDisplay = ["Name", "Email","PhoneNumber","Password","LastSync","CurrentJob","Response","Date","StartingTime","EndingTime","JobEnded","JobsCompleted"];
+
+    // Create rows and cells for each specified detail
+    detailsToDisplay.forEach(function (detailKey) {
         var row = table.insertRow();
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
 
-        cell1.textContent = key;
-        cell2.textContent = userData[key];
-    }
+        cell1.textContent = detailKey;
+        cell2.textContent = userData[detailKey];
+    });
 
     userDetailsDiv.appendChild(table);
 }
@@ -114,10 +117,10 @@ function onViewTabDisplayed() {
 }
 
 // Add an event listener to handle the dropdown change event
-document.getElementById('user-dropdown').addEventListener('change', getUserDetails);
+// document.getElementById('user-dropdown').addEventListener('change', getUserDetails);
 
 // Call onViewTabDisplayed when the view tab is displayed
-document.getElementById('view-tab').addEventListener('click', onViewTabDisplayed);
+document.getElementById('viewButt').addEventListener('click', onViewTabDisplayed);
 
 // Add an event listener to handle the assign button click
 document.getElementById('assign-button').addEventListener('click', assignJob);
@@ -144,24 +147,25 @@ function assignJob() {
     var usersRef = database.ref('users');
 
     // Find the user with the selected name
-    usersRef.orderByChild('name').equalTo(selectedUserName).once('value')
+    usersRef.orderByChild('Name').equalTo(selectedUserName).once('value')
         .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var userKey = childSnapshot.key;
 
                 // Get the user's phone number
-                var userPhoneNumber = childSnapshot.val().number;
+                var userPhoneNumber = childSnapshot.val().PhoneNumber;
                 console.log('User Phone Number:', userPhoneNumber);
-                url = "https://wa.me/"+userPhoneNumber+"?text=You have been assigned a job on the website : https://gunkar16.github.io/Firebase-Login/ , please log in and submit your response"
+                url = "https://wa.me/"+userPhoneNumber+"?text=You have been assigned a job on the website : https://gunkar16.github.io/Firebase-Login/, please log in, navigate to the 'My Jobs' section and submit your response";
+                console.log(url)
                 window.open(url,"_blank").focus()
                 // Create an object with the job details
                 var jobDetails = {
-                    currentJob: address,
-                    startingTime: startTime,
-                    endingTime: endTime,
-                    date: date,
-                    response: "no response",
-                    jobEnded: "No"
+                    CurrentJob: address,
+                    StartingTime: startTime,
+                    EndingTime: endTime,
+                    Date: date,
+                    Response: "No response",
+                    JobEnded: "No"
                 };
 
                 // Update or create the job details under the user's key
@@ -193,7 +197,7 @@ function populateAssignDropdown() {
         .then(function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 var userData = childSnapshot.val();
-                var userName = userData.name;
+                var userName = userData.Name;
 
                 // Check if the user is already present in the dropdown
                 if (!assignDropdown.options.namedItem(userName)) {
@@ -216,4 +220,4 @@ function onAssignTabDisplayed() {
 }
 
 // Call onAssignTabDisplayed when the assign tab is displayed
-document.getElementById('assign-tab').addEventListener('click', onAssignTabDisplayed);
+document.getElementById('assignButt').addEventListener('click', onAssignTabDisplayed);

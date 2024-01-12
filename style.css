@@ -7,8 +7,8 @@ body {
 
 #admin-container {
     max-width: 800px;
-    height: 550px;
-    margin: 50px auto;
+    height: 700px;
+    margin: 20px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -76,4 +76,67 @@ body {
 #assign-tab label {
     display: block;
     margin-bottom: 5px;
+}
+body{
+    text-align: center;
+}
+#detailsButton{
+    background-color: #7FBD40;
+    color: white;
+    padding:16px 16px;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    margin-left: 10px;
+    cursor: pointer;
+}
+#user-dropdown , #assign-user-dropdown{
+    height:40px;
+    border: #7FBD40 solid 5px;
+    outline: none;
+}
+#address-input,#date-input,#start-time-input,#end-time-input{
+    height:25px;
+    border: #7FBD40 solid 5px;
+    outline: none;
+}
+#heading{
+    
+    margin: 0; 
+    margin-top: 20px;
+}
+@media(max-width: 660px){
+    .admin-button{
+        margin-top: 5px;
+        width:250px;
+    }
+
+}
+#assign-button{
+    background-color: rgb(127, 189, 64);
+    color: white;
+    padding: 16px 40px;
+    border-radius: 30px;
+    border: none;
+    font-size: 1rem;
+    margin-top: 20px;
+    cursor: pointer;
+}   
+@media(max-width:400px){
+    #heading{
+        font-size: 25px;
+    }
+}
+@media(max-width:510px){
+    #detailsButton{
+        margin-left: 0px;
+        margin-top: 10px;
+    }
+    #admin-container{
+        height:750px;
+        width: 500px;
+    }
+    body{
+        width: 540px;
+    }
 }
