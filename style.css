@@ -7,7 +7,7 @@ body {
 
 #admin-container {
     max-width: 800px;
-    height: 700px;
+    max-height: 3000px;
     margin: 20px auto;
     background-color: #fff;
     padding: 20px;
@@ -80,7 +80,7 @@ body {
 body{
     text-align: center;
 }
-#detailsButton{
+.detailsButton{
     background-color: #7FBD40;
     color: white;
     padding:16px 16px;
@@ -89,6 +89,7 @@ body{
     font-size: 1rem;
     margin-left: 10px;
     cursor: pointer;
+    transition: 0.5s;
 }
 #user-dropdown , #assign-user-dropdown{
     height:40px;
@@ -113,7 +114,7 @@ body{
 
 }
 #assign-button{
-    background-color: rgb(127, 189, 64);
+    background-color: #7FBD40;
     color: white;
     padding: 16px 40px;
     border-radius: 30px;
@@ -121,22 +122,37 @@ body{
     font-size: 1rem;
     margin-top: 20px;
     cursor: pointer;
+    transition: 0.5s;
 }   
+.detailsButton:hover{
+    background-color: #659831;
+}
+#assign-button:hover{
+    background-color: #659831;
+}
+#refresh{
+    background-color:  #DC3545;
+}
+#refresh:hover{
+    background-color:  #b72b39;
+}
 @media(max-width:400px){
     #heading{
         font-size: 25px;
     }
 }
 @media(max-width:510px){
-    #detailsButton{
+    .detailsButton{
         margin-left: 0px;
         margin-top: 10px;
     }
     #admin-container{
-        height:750px;
         width: 500px;
     }
     body{
         width: 540px;
     }
+}
+#excel{
+    margin-top: 10px;
 }

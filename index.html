@@ -48,12 +48,18 @@
                 <select id="user-dropdown"></select>
             </span>
             <span>   
-                <input type="button" id="detailsButton" onclick="getUserDetails()" value="Get / Update Details"></input>
+                <input type="button" class="detailsButton" onclick="getUserDetails()" value="Get / Update Details"></input>
+                <input type="button" class="detailsButton" id="refresh" onclick="refreshWeekly()" value="Refresh Weekly Details"></input>
+                <input id="excel"type="button" class="detailsButton" onclick="downloadExcel()" value="Download Excel Sheet">
+
             </span>
             <div id="user-details"></div>
         </div>
     </div>
     <!-- js scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
